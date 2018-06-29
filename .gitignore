@@ -50,3 +50,6 @@ build-iPhoneSimulator/
 .rvmrc
 
 .idea
+client_secrets.json
+calendar_id.txt
+token.yaml
