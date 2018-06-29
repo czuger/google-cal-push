@@ -19,7 +19,21 @@ class GoogleCal
     @service = Google::Apis::CalendarV3::CalendarService.new
     @service.client_options.application_name = APPLICATION_NAME
     @service.authorization = authorize
+
     @private_calendar_id = File.read( PRIVATE_CALENDAR_PATH )
+  end
+
+  def insert_event_into_private_calendar( title, summary, start_time, end_time )
+    start = start_time.to_datetime.rfc3339
+    end_t = end_time.to_datetime.rfc3339
+
+    start_google_format = Google::Apis::CalendarV3::EventDateTime.new( date_time: start )
+    end_google_format = Google::Apis::CalendarV3::EventDateTime.new( date_time: end_t )
+
+    event = Google::Apis::CalendarV3::Event.new( summary: title, description: summary,
+                                                 start: start_google_format, end: end_google_format )
+
+    @service.insert_event( @private_calendar_id, event )
   end
 
   private
